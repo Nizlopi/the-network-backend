@@ -1,10 +1,14 @@
 package com.lms.thenetwork.domain.member;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,6 +18,11 @@ public class Member {
     @Id
     @Column(name = "id", nullable = false)
     private UUID id;
+    @Column(name = "username", nullable = false)
+    private String username;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private MemberRole memberRole;
     @Column(name = "account_enabled")
     private boolean accountEnabled;
     @Column(name = "membership_type")
@@ -31,8 +40,12 @@ public class Member {
     @Column(name = "photo_url")
     private String photoUrl;
 
-    public Member(boolean accountEnabled, String membershipType, String email, String companyName, String firstName, String lastName, String password, String photoUrl) {
+    private boolean enabled = true;
+
+    public Member(String username, MemberRole memberRole, boolean accountEnabled, String membershipType, String email, String companyName, String firstName, String lastName, String password, String photoUrl) {
         id = UUID.randomUUID();
+        this.username = username;
+        this.memberRole = memberRole;
         this.accountEnabled = accountEnabled;
         this.membershipType = membershipType;
         this.email = email;
@@ -49,6 +62,14 @@ public class Member {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public MemberRole getMemberRole() {
+        return memberRole;
     }
 
     public boolean isAccountEnabled() {
@@ -112,11 +133,11 @@ public class Member {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member member = (Member) o;
-        return accountEnabled == member.accountEnabled && Objects.equals(id, member.id) && Objects.equals(membershipType, member.membershipType) && Objects.equals(email, member.email) && Objects.equals(companyName, member.companyName) && Objects.equals(firstName, member.firstName) && Objects.equals(lastName, member.lastName) && Objects.equals(password, member.password) && Objects.equals(photoUrl, member.photoUrl);
+        return accountEnabled == member.accountEnabled && enabled == member.enabled && Objects.equals(id, member.id) && Objects.equals(username, member.username) && memberRole == member.memberRole && Objects.equals(membershipType, member.membershipType) && Objects.equals(email, member.email) && Objects.equals(companyName, member.companyName) && Objects.equals(firstName, member.firstName) && Objects.equals(lastName, member.lastName) && Objects.equals(password, member.password) && Objects.equals(photoUrl, member.photoUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountEnabled, membershipType, email, companyName, firstName, lastName, password, photoUrl);
+        return Objects.hash(id, username, memberRole, accountEnabled, membershipType, email, companyName, firstName, lastName, password, photoUrl, enabled);
     }
 }

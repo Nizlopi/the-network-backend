@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 public class MemberMapper {
 
     public Member toEntity (MemberDTO memberDTO) {
-        return new Member(memberDTO.isAccountEnabled(), memberDTO.getMembershipType(), memberDTO.getEmail(), memberDTO.getCompanyName(), memberDTO.getFirstName(), memberDTO.getLastName(), memberDTO.getPassword(), memberDTO.getPhotoUrl());
+        return new Member(memberDTO.getUsername(), memberDTO.getMemberRole(), memberDTO.isAccountEnabled(), memberDTO.getMembershipType(), memberDTO.getEmail(), memberDTO.getCompanyName(), memberDTO.getFirstName(), memberDTO.getLastName(), memberDTO.getPassword(), memberDTO.getPhotoUrl());
     }
 
     public MemberDTO toMemberDTO (Member member) {
         return new MemberDTO()
+                .withUsername(member.getUsername())
+                .withMemberRole(member.getMemberRole())
                 .withAccountEnabled(member.isAccountEnabled())
                 .withMembershipType(member.getMembershipType())
                 .withEmail(member.getEmail())
