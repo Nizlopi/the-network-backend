@@ -1,7 +1,7 @@
 package com.lms.thenetwork.domain.member.service;
 
 import com.lms.thenetwork.domain.member.Member;
-import com.lms.thenetwork.domain.member.MemberRepository;
+import com.lms.thenetwork.domain.member.repositories.MemberRepository;
 import com.lms.thenetwork.domain.member.api.MemberDTO;
 import com.lms.thenetwork.domain.member.api.MemberMapper;
 import org.springframework.stereotype.Service;

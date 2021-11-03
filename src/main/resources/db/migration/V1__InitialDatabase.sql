@@ -1,25 +1,23 @@
-create table account_verification
+create sequence member_seq START WITH 1 increment by 1;
+create sequence role_seq START WITH 1 increment by 1;
+
+create table roles
 (
-    created_on        timestamp    not null,
-    verification_code varchar(255) not null,
-    user_id           integer      not null,
-    primary key (user_id)
+    id bigint,
+    name varchar not null,
+    primary key(id)
 );
-create table admins
+
+create table members
 (
-    id integer not null,
-    primary key (id)
-);
-create table member
-(
-    id              uuid      not null,
-    account_enabled boolean      not null,
-    membership_type varchar(255) not null,
+    id bigint,
+    username varchar(255),
     email           varchar(255) not null,
-    company_name    varchar(255) not null,
-    first_name      varchar(255),
-    last_name       varchar(255),
     password        varchar(255),
-    photo_url       varchar(255),
-    primary key (id)
+    primary key(id)
 );
+
+
+INSERT INTO roles(id, name) VALUES(1, 'ROLE_USER');
+INSERT INTO roles(id, name) VALUES(2, 'ROLE_MODERATOR');
+INSERT INTO roles(id, name) VALUES(3, 'ROLE_ADMIN');

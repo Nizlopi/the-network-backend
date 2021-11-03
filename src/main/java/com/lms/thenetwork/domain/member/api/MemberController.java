@@ -4,6 +4,7 @@ import com.lms.thenetwork.domain.member.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,11 +22,13 @@ public class MemberController {
     }
 
     @GetMapping(produces = "application/json")
+    @PreAuthorize("hasRole('MEMBER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<MemberDTO> getMembers() {
         return memberService.getAllMembers();
     }
 
     @PostMapping(consumes = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void addMember(@RequestBody MemberDTO memberDTO) {
         LOGGER.info("New member created at: " + LocalDateTime.now());
